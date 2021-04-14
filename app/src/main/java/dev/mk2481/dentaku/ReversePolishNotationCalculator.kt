@@ -27,24 +27,25 @@ class ReversePolishNotationCalculator(
                     stack.addLast(num)
                 }
                 else -> {
-                    // 引き算とわり算は適当にやると 12/ が 2/1 になってしまうので注意すること。
-                    when (it) {
-                        "+" -> stack.addLast(stack.removeLast() + stack.removeLast())
-                        "-" -> {
-                            val op2 = stack.removeLast()
-                            stack.addLast(stack.removeLast() - op2)
-                        }
-                        "*" -> stack.addLast(stack.removeLast() * stack.removeLast())
-                        "/" -> {
-                            val op2 = stack.removeLast()
-                            stack.addLast(stack.removeLast() / op2)
-                        }
-                    }
+                    val op2 = stack.removeLast()
+                    val op1 = stack.removeLast()
+                    println("$op1 $it $op2")
+                    stack.addLast(calc(op1, op2, it))
+                    println(stack)
                 }
             }
         }
         return stack.removeFirst()
     }
+
+    private fun calc(op1: BigDecimal, op2: BigDecimal, operator: String): BigDecimal =
+        when (operator) {
+            "+" -> op1 + op2
+            "-" -> op1 - op2
+            "*" -> op1 * op2
+            "/" -> op1 / op2
+            else -> throw RuntimeException("unknown operator: $operator")
+        }
 
     override fun toString(): String {
         return "ReversePolishNotationCalculator(exp='$exp', delimiter='$delimiter')"

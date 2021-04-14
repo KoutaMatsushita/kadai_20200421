@@ -27,13 +27,10 @@ class Expression(private val exp: String) {
                         resultStringList.add(currentNumber)
                         currentNumber = ""
                         val operator = Operator.fromString(str)
-                        if (operators.lastOrNull()?.rank ?: 0 > operator.rank) {
+                        while (operators.isNotEmpty() && operators.lastOrNull()?.rank ?: 0 >= operator.rank) {
                             resultStringList.add(operators.removeLast().symbol)
-                            operators.addLast(Operator.fromString(str))
-                        } else {
-                            operators.addLast(Operator.fromString(str))
                         }
-
+                        operators.addLast(Operator.fromString(str))
                     }
                 }
             }

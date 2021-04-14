@@ -18,7 +18,8 @@ class ReversePolishNotationCalculatorTest {
         "1 2 *,             2",
         "1 2 * 3 +,         5",
         "6 2 /,             3",
-        "10 4 +,            14"
+        "10 4 +,            14",
+        "3 2 - 3 2 * +,     7"
     )
     fun answer(exp: String, actual: BigDecimal) {
         assertEquals(ReversePolishNotationCalculator(exp).answer(), actual)
@@ -26,7 +27,6 @@ class ReversePolishNotationCalculatorTest {
 
     @Test
     fun answer() {
-        println(Expression("1*2+3").toRPN().exp)
         assertEquals(
             ReversePolishNotationCalculator(Expression("1*2+3").toRPN().exp).answer(),
             5.toBigDecimal()
