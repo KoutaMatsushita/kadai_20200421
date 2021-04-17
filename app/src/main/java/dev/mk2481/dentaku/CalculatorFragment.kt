@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.activityViewModels
 import dev.mk2481.dentaku.databinding.FragmentCalculatorBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
 
-    private val viewModel by viewModels<CalculatorFragmentViewModel>()
+    private val viewModel by activityViewModels<CalculatorFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,14 +37,11 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
         binding.buttonBack.setOnClickListener { viewModel.onBack() }
         binding.buttonEq.setOnClickListener { viewModel.onEnter() }
 
-        lifecycleScope.launch {
-            viewModel.expression.collect {
-                binding.expression.text = it
-                binding.answer.text = kotlin.runCatching {
-                    ReversePolishNotationCalculator(Expression(it).toRPN().exp).answer()
-                        .toPlainString()
-                }.getOrNull() ?: ""
-            }
+        viewModel.exp.observe(viewLifecycleOwner) {
+            binding.expression.text = it
+        }
+        viewModel.ans.observe(viewLifecycleOwner) {
+            binding.answer.text = it
         }
     }
 }
