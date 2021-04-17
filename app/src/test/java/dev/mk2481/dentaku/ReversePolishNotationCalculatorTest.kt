@@ -1,6 +1,7 @@
 package dev.mk2481.dentaku
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -19,17 +20,18 @@ class ReversePolishNotationCalculatorTest {
         "1 2 * 3 +,         5",
         "6 2 /,             3",
         "10 4 +,            14",
-        "3 2 - 3 2 * +,     7"
+        "3 2 - 3 2 * +,     7",
+        "1 2 /,             0.5"
     )
     fun answer(exp: String, actual: BigDecimal) {
-        assertEquals(ReversePolishNotationCalculator(exp).answer(), actual)
+        assertThat(ReversePolishNotationCalculator(exp).answer(), Matchers.comparesEqualTo(actual))
     }
 
     @Test
     fun answer() {
-        assertEquals(
+        assertThat(
             ReversePolishNotationCalculator(Expression("1*2+3").toRPN().exp).answer(),
-            5.toBigDecimal()
+            Matchers.comparesEqualTo(5.toBigDecimal())
         )
     }
 }

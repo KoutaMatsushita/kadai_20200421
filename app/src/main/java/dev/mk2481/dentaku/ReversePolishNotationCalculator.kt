@@ -1,6 +1,7 @@
 package dev.mk2481.dentaku
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * 逆ポーランド記法の式を計算する
@@ -29,9 +30,7 @@ class ReversePolishNotationCalculator(
                 else -> {
                     val op2 = stack.removeLast()
                     val op1 = stack.removeLast()
-                    println("$op1 $it $op2")
                     stack.addLast(calc(op1, op2, it))
-                    println(stack)
                 }
             }
         }
@@ -43,7 +42,7 @@ class ReversePolishNotationCalculator(
             "+" -> op1 + op2
             "-" -> op1 - op2
             "*" -> op1 * op2
-            "/" -> op1 / op2
+            "/" -> op1.divide(op2, 10, RoundingMode.HALF_EVEN).stripTrailingZeros()
             else -> throw RuntimeException("unknown operator: $operator")
         }
 
