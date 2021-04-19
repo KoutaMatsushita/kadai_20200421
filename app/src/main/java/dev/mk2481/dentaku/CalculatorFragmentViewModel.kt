@@ -23,7 +23,7 @@ class CalculatorFragmentViewModel(
             val a = kotlin.runCatching {
                 ReversePolishNotationCalculator(Expression(it).toRPN().exp).answer()
                     .toPlainString()
-            }.getOrNull() ?: ""
+            }.getOrDefault("")
             ans.postValue(a)
         }
     }
